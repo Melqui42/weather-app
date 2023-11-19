@@ -1,8 +1,15 @@
+import { ImageSourcePropType } from 'react-native'
+
+import clearSkyDay from '@assets/images/day/clearSky.png'
+import fewCloudsDay from '@assets/images/day/fewClouds.png'
+import clearSkyNight from '@assets/images/night/clearSky.png'
+import fewCloudsNight from '@assets/images/night/fewClouds.png'
 import * as Location from 'expo-location'
 
 import getCurrentWeather from './consultAPI'
 
 interface LocationData {
+  image: ImageSourcePropType
   cityName: string
   dayName: string
   hours: {
@@ -63,7 +70,7 @@ const getLocation = async (): Promise<LocationData | undefined> => {
 
       const fullHours = `${hours}:${minutes}`
 
-      let timeSystem
+      let timeSystem = ''
       if (hours >= 0 && hours < 12) {
         timeSystem = 'AM'
       } else {
@@ -79,7 +86,29 @@ const getLocation = async (): Promise<LocationData | undefined> => {
         message = 'GOOD AFTERNOON'
       }
 
+      let image
+
+      const getWeatherIcon = (
+        night: ImageSourcePropType,
+        day: ImageSourcePropType,
+      ) => {
+        if (hours >= 18 || hours <= 5) {
+          image = night
+        } else {
+          image = day
+        }
+      }
+
+      switch (response.weather[0].description) {
+        case 'few cloud':
+          getWeatherIcon(fewCloudsNight, fewCloudsDay)
+          break
+        case 'clear sky':
+          getWeatherIcon(clearSkyNight, clearSkyDay)
+      }
+
       return {
+        image,
         cityName: response.name,
         dayName: dayNames,
         hours: { hours, minutes, fullHours },

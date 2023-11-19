@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ImageSourcePropType } from 'react-native'
 
 import getLocation from '@api/getLocation'
 import {
@@ -12,6 +13,7 @@ import { ThemeProvider } from 'styled-components'
 import * as C from './styled'
 
 interface WeatherData {
+  image: ImageSourcePropType
   cityName: string
   dayName: string
   hours: {
@@ -93,7 +95,7 @@ const Home: React.FC = () => {
             </C.Time>
           </C.Top>
           <C.Content>
-            <C.Image source={require('@assets/image.png')} />
+            <C.Image source={data?.image} />
             <C.Information>
               <C.Temperature>{data?.temp}°C</C.Temperature>
               <C.Description>{data?.message}</C.Description>

@@ -3,7 +3,7 @@ import * as Location from 'expo-location'
 
 const key = 'bd16c61e5d02fae394723e49ab73f4d0'
 
-const getCurrentWeather = async (location: Location.LocationObject)  => {
+const getCurrentWeather = async (location: Location.LocationObject) => {
   try {
     const coords = location.coords
     const lat: number = coords.latitude
